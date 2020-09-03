@@ -7,4 +7,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="FlagImage">
+        <item name="android:layout_marginStart">@dimen/min_value</item>
+        <item name="android:layout_marginTop">@dimen/min_value</item>
+        <item name="android:layout_marginBottom">@dimen/min_value</item>
+    </style>
+
 </resources>
