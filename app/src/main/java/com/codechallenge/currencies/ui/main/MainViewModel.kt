@@ -39,7 +39,7 @@ class MainViewModel @ViewModelInject constructor(
     private val callback = object : Callback<Response> {
         override fun onResponse(call: Call<Response>, response: retrofit2.Response<Response>) {
             when (response.code()) {
-                in 200 until 300 -> response.body()?.let {
+                in 100 until 300 -> response.body()?.let {
                     state.postValue(MainViewModelState.Result(it))
                 }
                 else -> state.postValue(MainViewModelState.Error("Can not fetch data from server"))

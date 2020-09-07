@@ -26,7 +26,7 @@ import kotlin.test.assertEquals
 @RunWith(AndroidJUnit4::class)
 @UninstallModules(NetworkModule::class)
 @HiltAndroidTest
-class ErrorCodesTest {
+class StatusCodesTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
@@ -43,48 +43,44 @@ class ErrorCodesTest {
         mockServer.start(8080)
     }
 
-    @Ignore("needs to investigate correct format of error response for Retrofit")
-    @Test
-    fun checkIfServerSentError100_shouldShowError() {
-        setDispatcher("full_json_1.json", 100)
-        activityTestRule.launchActivity(null)
-
-        waitUntilView(R.id.currencies_rv, 3, ViewMatchers.isDisplayed())
-        assertEquals(1, mockServer.requestCount)
-        checkToast("Continue")
-    }
-
-    @Ignore("needs to investigate correct format of error response for Retrofit")
-    @Test
-    fun checkIfServerSentError105_shouldShowError() {
-        setDispatcher("error102.json", 102)
-        activityTestRule.launchActivity(null)
-
-        waitUntilView(R.id.currencies_rv, 3, ViewMatchers.isDisplayed())
-        assertEquals(1, mockServer.requestCount)
-        checkToast("Processing (WebDAV)")
-    }
-
-    @Ignore("needs to investigate correct format of error response for Retrofit")
     @Test
     fun checkIfServerSentError300_shouldShowError() {
-        setDispatcher("error300.json", 300)
+        setDispatcher("error300.xml", 300)
         activityTestRule.launchActivity(null)
 
         waitUntilView(R.id.currencies_rv, 3, ViewMatchers.isDisplayed())
         assertEquals(1, mockServer.requestCount)
-        checkToast("Multiple Choices")
+        checkToast("Can not fetch data from server")
     }
 
-    @Ignore("needs to investigate correct format of error response for Retrofit")
     @Test
     fun checkIfServerSentError400_shouldShowError() {
-        setDispatcher("error400.json", 400)
+        setDispatcher("error400.xml", 400)
         activityTestRule.launchActivity(null)
 
         waitUntilView(R.id.currencies_rv, 3, ViewMatchers.isDisplayed())
         assertEquals(1, mockServer.requestCount)
-        checkToast("Bad Request")
+        checkToast("Can not fetch data from server")
+    }
+
+    @Test
+    fun checkIfServerSentError404_shouldShowError() {
+        setDispatcher("error404.xml", 404)
+        activityTestRule.launchActivity(null)
+
+        waitUntilView(R.id.currencies_rv, 3, ViewMatchers.isDisplayed())
+        assertEquals(1, mockServer.requestCount)
+        checkToast("Can not fetch data from server")
+    }
+
+    @Test
+    fun checkIfServerSentError500_shouldShowError() {
+        setDispatcher("error500.xml", 500)
+        activityTestRule.launchActivity(null)
+
+        waitUntilView(R.id.currencies_rv, 3, ViewMatchers.isDisplayed())
+        assertEquals(1, mockServer.requestCount)
+        checkToast("Can not fetch data from server")
     }
 
     fun setDispatcher(fileName: String, responseCode: Int) {
