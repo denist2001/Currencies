@@ -1,6 +1,5 @@
 package com.codechallenge.currencies
 
-//import androidx.fragment.app.testing.launchFragmentInContainer
 import android.graphics.Color
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -11,10 +10,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
 import com.codechallenge.currencies.di.NetworkModule
-import com.codechallenge.currencies.utils.getStringFrom
-import com.codechallenge.currencies.utils.recyclerItemAtPosition
-import com.codechallenge.currencies.utils.waitUntilView
-import com.codechallenge.currencies.utils.withTextColor
+import com.codechallenge.currencies.utils.*
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -25,7 +21,10 @@ import okhttp3.mockwebserver.RecordedRequest
 import org.awaitility.Awaitility
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.not
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import java.lang.Thread.sleep
 import java.util.concurrent.TimeUnit
@@ -71,16 +70,14 @@ class MalformedResponsesTest {
         checkToast("Empty response")
     }
 
-    @Ignore("needs to be started in fragment with launchFragmentInContainer")
     @Test
     fun checkIfStartLoading_shouldAppearsSpinnerUntilDataBeRecieved() {
         setDispatcher("full_json_1.json", 200)
         activityTestRule.launchActivity(null)
-//        val scenario = launchFragmentInContainer<MainFragment>()
-//        waitUntilView(R.id.progressBar, 3, isDisplayed())
+        waitUntilProgressBarAppears(R.id.progressBar, 1000)
         assertEquals(1, mockServer.requestCount)
         waitUntilView(R.id.currencies_rv, 3, isDisplayed())
-        onView(withId(R.id.progressBar)).check(matches(not(isDisplayed())))
+        waitUntilProgressBarDisappears(R.id.progressBar, 1000)
     }
 
     @Test

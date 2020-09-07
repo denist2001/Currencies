@@ -7,12 +7,16 @@ import android.view.Surface
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.NonNull
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.InstrumentationRegistry.getTargetContext
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiObject
+import androidx.test.uiautomator.UiSelector
 import org.awaitility.Awaitility
 import org.awaitility.core.ConditionTimeoutException
 import org.hamcrest.Description
@@ -63,6 +67,34 @@ fun waitUntilView(
     } catch (e: ConditionTimeoutException) {
         Assert.fail("View with id: $viewId doesn't match $matcher in $timeout seconds")
     }
+}
+
+fun waitUntilProgressBarAppears(
+    viewId: Int,
+    timeoutInMs: Long = 3
+) {
+    try {
+        getUiObject(viewId).waitForExists(timeoutInMs)
+    } catch (e: ConditionTimeoutException) {
+        Assert.fail("View with id: $viewId doesn't appear in $timeoutInMs seconds")
+    }
+}
+
+fun waitUntilProgressBarDisappears(
+    viewId: Int,
+    timeoutInMs: Long = 3
+) {
+    try {
+        getUiObject(viewId).waitUntilGone(timeoutInMs)
+    } catch (e: ConditionTimeoutException) {
+        Assert.fail("View with id: $viewId doesn't disappear in $timeoutInMs seconds")
+    }
+}
+
+fun getUiObject(viewId: Int): UiObject {
+    val resourceId = getTargetContext().resources.getResourceName(viewId)
+    val selector = UiSelector().resourceId(resourceId)
+    return UiDevice.getInstance(getInstrumentation()).findObject(selector)
 }
 
 fun withTextColor(colorId: Int): Matcher<View> {
