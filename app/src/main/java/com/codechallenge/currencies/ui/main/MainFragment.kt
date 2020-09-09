@@ -5,12 +5,14 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.databinding.ObservableInt
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.codechallenge.currencies.R
 import com.codechallenge.currencies.data.Response
+import com.codechallenge.currencies.databinding.MainFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -23,10 +25,14 @@ class MainFragment : Fragment(R.layout.main_fragment), LifecycleOwner {
     lateinit var mainFragmentAdapter: MainFragmentAdapter
 
     private val viewModel by viewModels<MainViewModel>()
+    private var binding: MainFragmentBinding? = null
+
+    var progressBarVisibility = ObservableInt(INVISIBLE)
 
     @ObsoleteCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding = MainFragmentBinding.bind(view)
         setupRecyclerView()
         observeViewModelState()
         if (savedInstanceState == null) {
@@ -38,13 +44,13 @@ class MainFragment : Fragment(R.layout.main_fragment), LifecycleOwner {
         viewModel.state.observe(viewLifecycleOwner,
             { state ->
                 when (state) {
-                    MainViewModelState.Loading -> showProgress(true)
+                    MainViewModelState.Loading -> progressBarVisibility.set(VISIBLE)
                     is MainViewModelState.Result -> {
-                        showProgress(false)
+                        progressBarVisibility.set(INVISIBLE)
                         showResult(state.response)
                     }
                     is MainViewModelState.Error -> {
-                        showProgress(false)
+                        progressBarVisibility.set(INVISIBLE)
                         showError(state.message)
                     }
                 }
@@ -63,14 +69,15 @@ class MainFragment : Fragment(R.layout.main_fragment), LifecycleOwner {
         mainFragmentAdapter.setNewRates(response.rates)
     }
 
-    private fun showProgress(isLoading: Boolean) {
-        progressBar.visibility = if (isLoading) VISIBLE else INVISIBLE
-    }
-
     private fun setupRecyclerView() {
         with(currencies_rv) {
             adapter = mainFragmentAdapter
             layoutManager = LinearLayoutManager(context)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }

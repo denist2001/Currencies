@@ -23,6 +23,10 @@ class NetworkModule {
 
     @Provides
     @Singleton
+    fun getRequestDelay() = 10_000L
+
+    @Provides
+    @Singleton
     fun provideGson() = GsonBuilder()
         .setLenient()
         .create()

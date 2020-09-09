@@ -16,9 +16,17 @@ import javax.inject.Singleton
 @Module
 @InstallIn(ApplicationComponent::class)
 class MainMockModule {
+    companion object {
+        var requestDelay = 2_000L
+    }
+
     @Provides
     @Singleton
     fun getUrl(): String = "http://localhost:8080/"
+
+    @Provides
+    @Singleton
+    fun getRequestDelay() = requestDelay
 
     @Provides
     @Singleton

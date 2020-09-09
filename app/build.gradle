@@ -5,13 +5,13 @@ apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.codechallenge.currencies"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -30,6 +30,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    dataBinding {
+        enabled = true
     }
     viewBinding {
         enabled = true
@@ -84,6 +87,6 @@ dependencies {
     androidTestImplementation "org.mockito:mockito-android:$mockito_version"
     //network mock
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver_version"
-    //fragment testing - //TODO: investigate why it makes test running failed
-//    debugImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    //fragment testing
+    androidTestImplementation "androidx.fragment:fragment-testing:$fragment_version"
 }

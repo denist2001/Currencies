@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="116dp"
+    android:layout_height="66dp"
     android:layout_margin="@dimen/min_value"
     app:cardCornerRadius="@dimen/min_value"
     app:contentPadding="@dimen/min_value">
@@ -14,8 +14,8 @@
         <ImageView
             android:id="@+id/first_currency_iv"
             android:theme="@style/FlagImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -23,8 +23,8 @@
 
         <ImageView
             android:id="@+id/second_currency_iv"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="@dimen/min_value"
             android:theme="@style/FlagImage"
             app:layout_constraintBottom_toBottomOf="parent"

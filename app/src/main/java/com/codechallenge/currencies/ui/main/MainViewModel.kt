@@ -13,7 +13,8 @@ import retrofit2.Call
 import retrofit2.Callback
 
 class MainViewModel @ViewModelInject constructor(
-    private val repository: Repository
+    private val repository: Repository,
+    private val requestDelayInMs: Long
 ) : ViewModel() {
 
     val state = MutableLiveData<MainViewModelState>()
@@ -28,7 +29,7 @@ class MainViewModel @ViewModelInject constructor(
     @ObsoleteCoroutinesApi
     private fun startLoading() {
         state.postValue(MainViewModelState.Loading)
-        val timerTask = ticker(10_000, 0)
+        val timerTask = ticker(requestDelayInMs, 0)
         viewModelScope.launch {
             for (event in timerTask) {
                 repository.getRates(callback)
